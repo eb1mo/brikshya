@@ -36,6 +36,9 @@
                         <a class="nav-link" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="greenspaces.html">Greenspaces</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#">Marketplace</a>
                     </li>
                     <li class="nav-item">
@@ -49,138 +52,24 @@
         </div>
     </nav>
     <!-- navbar ends -->
-    <!-- leaflet map greenspaces begins-->
-    <div class="greenspace-map">
-      <div id="map"></div>
-      <script>
-        const map = L.map("map").setView([0, 0], 3); // Centered on the world
-
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          attribution: "© OpenStreetMap contributors",
-        }).addTo(map);
-
-        const colors = {
-          park: "#32cd32",
-          nature_reserve: "#228b22",
-          national_park: "#006400",
-          protected_area: "#8b4513",
-        };
-
-        function getColor(tags) {
-          if (tags && tags.leisure === "park") return colors.park;
-          if (tags && tags.leisure === "nature_reserve")
-            return colors.nature_reserve;
-          if (tags && tags.boundary === "national_park")
-            return colors.national_park;
-          if (tags && tags.boundary === "protected_area")
-            return colors.protected_area;
-          return "#cccccc"; // Default color
-        }
-
-        let greenSpacesLayer;
-
-        function fetchGreenSpaces() {
-          const bounds = map.getBounds();
-          const bbox = `${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()}`;
-          const url = `https://overpass-api.de/api/interpreter?data=[out:json];(node["leisure"="park"](${bbox});way["leisure"="park"](${bbox});relation["leisure"="park"](${bbox});node["leisure"="nature_reserve"](${bbox});way["leisure"="nature_reserve"](${bbox});relation["leisure"="nature_reserve"](${bbox});node["boundary"="national_park"](${bbox});way["boundary"="national_park"](${bbox});relation["boundary"="national_park"](${bbox});node["boundary"="protected_area"](${bbox});way["boundary"="protected_area"](${bbox});relation["boundary"="protected_area"](${bbox}););out geom;`;
-
-          fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-              if (greenSpacesLayer) {
-                map.removeLayer(greenSpacesLayer);
-              }
-              greenSpacesLayer = L.layerGroup().addTo(map);
-
-              data.elements.forEach((element) => {
-                if (element.type === "node" && element.lat && element.lon) {
-                  L.circleMarker([element.lat, element.lon], {
-                    radius: 5,
-                    color: getColor(element.tags),
-                    fillColor: getColor(element.tags),
-                    fillOpacity: 0.5,
-                  })
-                    .addTo(greenSpacesLayer)
-                    .bindPopup(createPopupContent(element));
-                } else if (
-                  (element.type === "way" || element.type === "relation") &&
-                  element.geometry
-                ) {
-                  const coordinates = element.geometry
-                    .filter((node) => node.lat && node.lon)
-                    .map((node) => [node.lat, node.lon]);
-
-                  if (coordinates.length > 0) {
-                    L.polygon(coordinates, {
-                      color: getColor(element.tags),
-                      fillColor: getColor(element.tags),
-                      fillOpacity: 0.5,
-                    })
-                      .addTo(greenSpacesLayer)
-                      .bindPopup(createPopupContent(element));
-                  }
-                }
-              });
-            })
-            .catch((error) => {
-              console.error("Error fetching green spaces:", error);
-            });
-        }
-
-        function createPopupContent(element) {
-          let popupContent = "<h3>Green Space</h3>";
-          if (element.tags) {
-            if (element.tags.name) {
-              popupContent +=
-                "<p><strong>Name:</strong> " + element.tags.name + "</p>";
-            }
-            popupContent +=
-              "<p><strong>Type:</strong> " +
-              (element.tags.leisure || element.tags.boundary || "Unknown") +
-              "</p>";
-          }
-          return popupContent;
-        }
-
-        function addLegend() {
-          const legend = L.control({ position: "bottomright" });
-
-          legend.onAdd = function (map) {
-            const div = L.DomUtil.create("div", "info legend");
-            const labels = [
-              "Park",
-              "Nature Reserve",
-              "National Park",
-              "Protected Area",
-            ];
-            const colorKeys = [
-              "park",
-              "nature_reserve",
-              "national_park",
-              "protected_area",
-            ];
-
-            for (let i = 0; i < labels.length; i++) {
-              div.innerHTML +=
-                '<i style="background:' +
-                colors[colorKeys[i]] +
-                '"></i> ' +
-                labels[i] +
-                "<br>";
-            }
-
-            return div;
-          };
-
-          legend.addTo(map);
-        }
-
-        map.on("moveend", fetchGreenSpaces);
-        fetchGreenSpaces(); // Initial fetch
-        addLegend(); // Add legend to the map
-      </script>
-    </div>
-    <!-- green space ends  -->
+    <!-- main map starts -->
+    <div  id='map'  style='height:380px;'  />  
+     <link  rel="stylesheet"  href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"  />  
+     <script  src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>  
+       
+     <script>  
+           var  OSM_URL  =  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';  
+           var  OSM_ATTRIB  =  '&copy;  <a  href="http://openstreetmap.org/copyright">OpenStreetMap</a>  contributors';  
+           var  osmLayer  =  L.tileLayer(OSM_URL,  {  attribution:  OSM_ATTRIB  });  
+       
+           var  WAQI_URL  =  "https://tiles.waqi.info/tiles/usepa-aqi/{z}/{x}/{y}.png?token=_TOKEN_ID_";  
+           var  WAQI_ATTR  =  'Air  Quality  Tiles  &copy;  <a  href="http://waqi.info">waqi.info</a>';  
+           var  waqiLayer  =  L.tileLayer(WAQI_URL,  {  attribution:  WAQI_ATTR  });  
+       
+           var  map  =  L.map('map').setView([27.7172, 85.3240],  11);  
+           map.addLayer(osmLayer).addLayer(waqiLayer);  
+     </script>
+   <!-- main map ends -->
   </body>
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
