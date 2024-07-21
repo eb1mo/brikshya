@@ -1,13 +1,19 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-
-.montserrat-regular {
-    font-weight: 500;
+*{
+    margin: 0;
+    padding: 0;
 }
 
-.monstserratt-semibold {
-    font-weight: 600;
+.monstserrat-regular {
+    font-family: 'Montserrat' !important;
+    font-weight: 500 !important;
+}
+
+.monstserrat-semibold {
+    font-family: 'Montserrat' !important;
+    font-weight: 600 !important;
 }
 
 #map {

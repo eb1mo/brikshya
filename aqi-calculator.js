@@ -1,35 +1,46 @@
 // Function to estimate the number of trees required
 function estimateTreesRequired(currentAQI, targetAQI, areaInAcres) {
-    const aqiReduction = currentAQI - targetAQI;
-    const reductionPer20Trees = 2.5; // This is a constant; adjust as necessary
-    const reductionsNeeded = aqiReduction / (currentAQI * (reductionPer20Trees / 100));
-    const treesNeeded = Math.ceil(reductionsNeeded * 20 * areaInAcres);
-    return treesNeeded;
+  const aqiReduction = currentAQI - targetAQI;
+  const reductionPer20Trees = 2.5; // This is a constant; adjust as necessary
+  const reductionsNeeded =
+    aqiReduction / (currentAQI * (reductionPer20Trees / 100));
+  const treesNeeded = Math.ceil(reductionsNeeded * 20 * areaInAcres);
+  return treesNeeded;
 }
 
 // Function to get color for AQI level
 function getColorForAQI(aqi) {
-    if (aqi <= 50) return "green";
-    if (aqi <= 100) return "yellow";
-    if (aqi <= 150) return "orange";
-    if (aqi <= 200) return "red";
-    if (aqi <= 300) return "purple";
-    return "maroon";
+  if (aqi <= 50) return "green";
+  if (aqi <= 100) return "yellow";
+  if (aqi <= 150) return "orange";
+  if (aqi <= 200) return "red";
+  if (aqi <= 300) return "purple";
+  return "maroon";
 }
 
 // Function to update the card with AQI data
-function updateCard(aqi, category, dominantPollutant, pollutantsHTML, locationInfo) {
-    const resultDiv = document.getElementById("result");
-    const areaInAcres = 247;
-    const targetAQI = 50;
-    const treesRequired = estimateTreesRequired(aqi, targetAQI, areaInAcres);
-    const color = getColorForAQI(aqi);
+function updateCard(
+  aqi,
+  category,
+  dominantPollutant,
+  pollutantsHTML,
+  locationInfo
+) {
+  const resultDiv = document.getElementById("result");
+  const areaInAcres = 247;
+  const targetAQI = 50;
+  const treesRequired = estimateTreesRequired(aqi, targetAQI, areaInAcres);
+  const color = getColorForAQI(aqi);
 
-    resultDiv.innerHTML = `
+  resultDiv.innerHTML = `
       <div class="card" style="width:20rem;">
         <div class="card-body">
           <h5 class="card-title">Current AQI</h5>
-          ${locationInfo ? `<h6 class="card-subtitle mb-2 text-body-secondary">${locationInfo}</h6>` : ''}
+          ${
+            locationInfo
+              ? `<h6 class="card-subtitle mb-2 text-body-secondary">${locationInfo}</h6>`
+              : ""
+          }
           <h5 class="card-title fw-bold">${aqi}</h5>
           <h6 class="card-subtitle mb-2 text-body-secondary">
             <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background-color: ${color}; margin-right: 5px;"></span>
@@ -40,80 +51,99 @@ function updateCard(aqi, category, dominantPollutant, pollutantsHTML, locationIn
         </div>
       </div>`;
 
-    if (treesRequired !== undefined) {
-        if (aqi <= 50) {
-            document.getElementById('treeEstimation').innerHTML = `
+  
+
+  if (treesRequired !== undefined) {
+    if (aqi <= 50) {
+      document.getElementById("treeEstimation").innerHTML = `
         <div class="alert alert-info">
             AQI is under safe limit.
         </div>`;
-        } else {
-            document.getElementById('treeEstimation').innerHTML = `
+    } else {
+      document.getElementById("treeEstimation").innerHTML = `
         <div class="alert alert-info">
             To reduce AQI from ${aqi} to ${targetAQI} in an area of ${areaInAcres} acres (1 sq. km), approximately ${treesRequired} trees need to be planted.
         </div>`;
-        }
     }
+  }
 }
 
 // Function to fetch AQI based on user's location
 async function fetchAQIByLocation(latitude, longitude) {
-    try {
-        const response = await fetch(
-            `get_air_quality.php?lat=${latitude}&lon=${longitude}`
-        );
-        const data = await response.json();
+  try {
+    const response = await fetch(
+      `get_air_quality.php?lat=${latitude}&lon=${longitude}`
+    );
+    const data = await response.json();
 
-        if (data.error) {
-            updateCard('Error', data.error, '', '', '');
-        } else {
-            const { aqi, category, dominantPollutant } = calculateAQI(data);
-            const pollutantsHTML = generatePollutantsHTML(data);
-            updateCard(aqi, category, dominantPollutant, pollutantsHTML, `Latitude: ${latitude} &deg; <br> Longitude: ${longitude} &deg;`);
-        }
-    } catch (error) {
-        updateCard('Error', error.message, '', '', '');
+    if (data.error) {
+      updateCard("Error", data.error, "", "", "");
+    } else {
+      const { aqi, category, dominantPollutant } = calculateAQI(data);
+      const pollutantsHTML = generatePollutantsHTML(data);
+      updateCard(
+        aqi,
+        category,
+        dominantPollutant,
+        pollutantsHTML,
+        `Latitude: ${latitude} &deg; <br> Longitude: ${longitude} &deg;`
+      );
     }
+  } catch (error) {
+    updateCard("Error", error.message, "", "", "");
+  }
 }
 
 // Function to handle geolocation
 function handleGeolocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            const { latitude, longitude } = position.coords;
-            fetchAQIByLocation(latitude, longitude);
-            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-        }, function (error) {
-            updateCard('Error', error.message, '', '', '');
-        });
-    } else {
-        updateCard('Error', 'Geolocation is not supported by this browser.', '', '', '');
-    }
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        const { latitude, longitude } = position.coords;
+        fetchAQIByLocation(latitude, longitude);
+        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+      },
+      function (error) {
+        updateCard("Error", error.message, "", "", "");
+      }
+    );
+  } else {
+    updateCard(
+      "Error",
+      "Geolocation is not supported by this browser.",
+      "",
+      "",
+      ""
+    );
+  }
 }
 
 // Event listener for city form submission
-document.getElementById("cityForm").addEventListener("submit", async function (e) {
+document
+  .getElementById("cityForm")
+  .addEventListener("submit", async function (e) {
     e.preventDefault();
     const city = document.getElementById("cityName").value;
     const resultDiv = document.getElementById("result");
     resultDiv.textContent = "Loading...";
 
     try {
-        const response = await fetch(
-            `get_air_quality.php?city=${encodeURIComponent(city)}`
-        );
-        const data = await response.json();
+      const response = await fetch(
+        `get_air_quality.php?city=${encodeURIComponent(city)}`
+      );
+      const data = await response.json();
 
-        if (data.error) {
-            updateCard('Error', data.error, '', '', '');
-        } else {
-            const { aqi, category, dominantPollutant } = calculateAQI(data);
-            const pollutantsHTML = generatePollutantsHTML(data);
-            updateCard(aqi, category, dominantPollutant, pollutantsHTML, city);
-        }
+      if (data.error) {
+        updateCard("Error", data.error, "", "", "");
+      } else {
+        const { aqi, category, dominantPollutant } = calculateAQI(data);
+        const pollutantsHTML = generatePollutantsHTML(data);
+        updateCard(aqi, category, dominantPollutant, pollutantsHTML, city);
+      }
     } catch (error) {
-        updateCard('Error', error.message, '', '', '');
+      updateCard("Error", error.message, "", "", "");
     }
-});
+  });
 
 // Fetch AQI based on user's location as soon as the page loads
 window.addEventListener("load", handleGeolocation);
