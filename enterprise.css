@@ -1,0 +1,108 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.cards{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+  padding: 30px;
+  flex: 1fr 1fr;
+}
+.card1{
+  width: 100%;
+  height: 300px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin-bottom: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card2{
+  width: 100%;
+  height: 300px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#img{
+  width: 300px;
+  height: auto;
+}
+.text-container {
+  max-width: 600px; /* Adjust this value to control the line length */
+  word-wrap: break-word; /* Optional */
+}
+.text-button{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: right;
+  gap: 30px;
+
+}
+button {
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  padding: 10px 20px; /* Padding */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 16px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  display: inline-flex; /* Flex display to align items */
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  gap: 8px; /* Space between icon and text */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+button .icon {
+  font-size: 18px; /* Icon size */
+}
+#title{
+  font-size: 50px;
+  text-align: center;
+  
+}
+.gradient-text {
+  background: linear-gradient(45deg, #4CAF50, #2E8B57); /* Subtle green gradient */
+  -webkit-background-clip: text; /* For Chrome/Safari */
+  -webkit-text-fill-color: transparent; /* For Chrome/Safari */
+  background-clip: text; /* For other browsers */
+  color: transparent; /* Fallback color */
+  font-weight: bold; /* Bold text */
+  text-transform: uppercase; /* Uppercase text */
+  display: inline; /* Inline for text */
+  font-size: 36px; /* Adjust font size as needed */
+  text-align: center; /* Center align text */
+}
+.gradient-text1{
+  background: linear-gradient(45deg, #4CAF50, #2E8B57); /* Subtle green gradient */
+  -webkit-background-clip: text; /* For Chrome/Safari */
+  -webkit-text-fill-color: transparent; /* For Chrome/Safari */
+  background-clip: text; /* For other browsers */
+  color: transparent; /* Fallback color */
+  font-weight: bold; /* Bold text */
+  text-transform: uppercase; /* Uppercase text */
+  display: inline; /* Inline for text */
+  font-size: 10px; /* Adjust font size as needed */
+  text-align: center; /* Center align text */
+}
+
