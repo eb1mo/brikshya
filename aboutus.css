@@ -1,0 +1,164 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main-container {
+    line-height: 30px;
+    width: 80%;
+    margin: auto;
+    height: auto;
+    padding: 20px 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.intro {
+    margin-top: 20px;
+}
+
+.intro h3 {
+    font-size: 50px;
+    margin-bottom: 20px;
+    color: #588157;
+}
+
+span {
+    font-size: 40px;
+    color: rgb(76, 139, 76);
+}
+
+.intro p {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.description {
+    font-size: 18px;
+}
+
+.description h3 {
+    color: #588157;
+    margin-bottom: 10px;
+}
+
+.description p {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.card-container {
+    padding: 20px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.card {
+    padding: 10px 0px;
+    border: 2px solid transparent;
+    border-radius: 30px;
+    background-color: #B2D2A4;
+    width: 300px;
+    height: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card .icons {
+    font-size: 30px;
+}
+
+.card .title {
+    margin-top: 10px;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.card .brief {
+    font-size: 18px;
+}
+
+/* Media Queries for Responsiveness */
+
+@media (max-width: 1200px) {
+    .intro h3 {
+        font-size: 40px;
+    }
+
+    span {
+        font-size: 35px;
+    }
+
+    .intro p {
+        font-size: 18px;
+    }
+
+    .description {
+        font-size: 16px;
+    }
+
+    .card-container {
+        justify-content: space-around;
+    }
+
+    .card {
+        width: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    .intro h3 {
+        font-size: 35px;
+    }
+
+    span {
+        font-size: 30px;
+    }
+
+    .intro p {
+        font-size: 16px;
+    }
+
+    .description {
+        font-size: 14px;
+    }
+
+    .card-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 90%;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .intro h3 {
+        font-size: 28px;
+    }
+
+    span {
+        font-size: 25px;
+    }
+
+    .intro p {
+        font-size: 14px;
+    }
+
+    .description {
+        font-size: 12px;
+    }
+
+    .card {
+        width: 100%;
+    }
+}
