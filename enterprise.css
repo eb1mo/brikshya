@@ -102,7 +102,7 @@ button .icon {
   font-weight: bold; /* Bold text */
   text-transform: uppercase; /* Uppercase text */
   display: inline; /* Inline for text */
-  font-size: 10px; /* Adjust font size as needed */
+  font-size: 20px; /* Adjust font size as needed */
   text-align: center; /* Center align text */
 }
 
